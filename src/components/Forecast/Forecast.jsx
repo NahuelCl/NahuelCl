@@ -7,7 +7,9 @@ import {validValues} from '../IconState'
 const renderForecastItem= forecast => {
     const {weekDay, hour, state, temperature} = forecast
     return(
-       <Grid item key={`${weekDay}${hour}`}>
+       <Grid 
+            data-testid="forecast-item-container" 
+            item key={`${weekDay}${hour}`}>
             <ForecastItem 
                 hour ={hour}
                 weekDay ={weekDay} 
