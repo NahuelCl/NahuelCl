@@ -1,7 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {Link} from 'react-router-dom'
 import {Grid} from '@material-ui/core'
+import AppFrame from '../components/AppFrame/AppFrame'
 import CityInfo from '../components/CityInfo/CityInfo'
 import Weather from '../components/Weather/Weather'
 import WeatherDetails from '../components/WeatherDetails'
@@ -60,8 +59,8 @@ const CityPage = props => {
     const forecasteItemList = forecastItemList
 
     return (   
-
-        <Grid container
+        <AppFrame>
+             <Grid container
             justify="center"
             direction="column">
                 <Grid item container 
@@ -81,14 +80,11 @@ const CityPage = props => {
                         <Forecast forecastItemList={forecasteItemList}/>
                     </Grid>
                 </Grid>
-                
-
-        </Grid>
+            </Grid>
+        </AppFrame>
+       
     )
 }
 
-CityPage.propTypes = {
-
-}
 
 export default CityPage

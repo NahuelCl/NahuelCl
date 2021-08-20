@@ -8,14 +8,6 @@ import NotFoundPage from './pages/NotFoundPage'
 
 const App = () => {
     return (
-        <Grid container
-            justify="center"
-            direction="row">
-                <Grid item 
-                xs={12}
-                sm={11}
-                md={10}
-                lg={8}> 
                     <Router>
                         <Switch>
                             <Route exact path="/">
@@ -32,8 +24,6 @@ const App = () => {
                             </Route>
                         </Switch>
                     </Router>
-                </Grid>
-        </Grid>
     )
 }
 
