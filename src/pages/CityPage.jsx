@@ -60,31 +60,32 @@ const CityPage = props => {
 
     return (   
         <AppFrame>
-             <Grid container
-            justify="center"
-            direction="column">
-                <Grid item container 
-                xs={12}
+            <Grid container
                 justify="center"
-                alignItems="flex-end">
+                direction="column"
+                spacing={2}>
+                <Grid item container 
+                    xs={12}
+                    justify="center"
+                    alignItems="flex-end">
                     <CityInfo city={city} country={country}/>
                 </Grid>
-                <Grid item xs={12}
-                justify="center">
-                        <Weather state={state} temperature={temperature}/>
-                        <WeatherDetails humidity={humidity} wind={wind}/>
-                    <Grid item>
-                        <ForecastChart data={data}/>
-                    </Grid>
-                    <Grid item>
-                        <Forecast forecastItemList={forecasteItemList}/>
-                    </Grid>
+                <Grid container item xs={12}
+                    justify="center">
+                    <Weather state={state} temperature={temperature}/>
+                    <WeatherDetails humidity={humidity} wind={wind}/>
+                </Grid>
+                <Grid item>
+                    <ForecastChart data={data}/>
+                </Grid>
+                <Grid item>
+                    <Forecast forecastItemList={forecasteItemList}/>
                 </Grid>
             </Grid>
-        </AppFrame>
-       
+        </AppFrame> 
     )
 }
 
 
 export default CityPage
+
