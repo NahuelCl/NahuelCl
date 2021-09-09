@@ -30,8 +30,8 @@ const WelcomeScreen = ({children}) => {
 
 
     return (
-        <div ref={myRefDiv}>
-            Welcome Screen
+        <div className="full" ref={myRefDiv}>
+            {children}
         </div>
     )
 }

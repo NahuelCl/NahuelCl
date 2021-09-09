@@ -1,19 +1,47 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {Link} from 'react-router-dom'
+import {Grid} from '@material-ui/core'
+import { Link as RouterLink } from 'react-router-dom'
+import { Typography, Link } from '@material-ui/core'
+import { IconContext } from 'react-icons'
+import {WiDaySunny} from 'react-icons/wi'
 const NotFoundPage = props => {
     return (
-        <div>
-            Not Found
-             <div>
-                <Link to="/main">Volver a main</Link>     
-           </div>     
-        </div>
+        <Grid container
+        direction="column"
+        justify="center"
+        className="full">
+            <div className="highlight">
+                <Grid item container xs={12}
+                justify="center"
+                alignItems="center">
+                    <Grid item>
+                        <IconContext.Provider value={{ size:"6em"}}>
+                            <WiDaySunny/>
+                        </IconContext.Provider>
+                    </Grid>
+                    <Grid item container
+                    direction="column"
+                     justify="center"
+                     alignItems="center">
+                         <Typography variant="h4" color="inherit">
+                            404 | La Pagina no existe
+                         </Typography>
+                         <Link color="inherit"
+                         aria-label="menu"
+                         component={RouterLink}
+                         to="/main">
+                             Ingresar
+                         </Link>
+
+                    </Grid>
+
+                </Grid>
+
+            </div>
+
+        </Grid>
     )
 }
 
-NotFoundPage.propTypes = {
-
-}
 
 export default NotFoundPage
