@@ -60,6 +60,18 @@ const CityList = ({cities, onClickCity}) => {
                 ))
 
             })
+            .catch( error => {
+                //Errore que nos responde el server
+                if (error.response) {
+                    const { data, status} = error.response;
+                    console.log("data", data);
+                    console.log("status", status);
+                } else if (error.request){
+                    console.log("Server in-accesible o no tengo internet");
+                }else  {
+                    console.log("Server in-accesible o no tengo internet");
+                }
+            } )
         }
         cities.forEach(({ city, country, countryCode }) => {
             setWeather(city, country, countryCode)
