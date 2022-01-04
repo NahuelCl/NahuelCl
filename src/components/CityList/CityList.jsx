@@ -13,7 +13,7 @@ const renderCityAndCountry = eventOnClickCity => (cityAndCountry, weather) =>{
             button
             key = {city} onClick={eventOnClickCity}>
             <Grid container
-                justify="center"
+                justifyContent="center"
                 allignItems ="center">
                     <Grid item
                         md={9}
@@ -36,27 +36,33 @@ const renderCityAndCountry = eventOnClickCity => (cityAndCountry, weather) =>{
     ) 
 }
 
+
 const CityList = ({cities, onClickCity}) => {
     const [allWeather, setallWeather] = useState({})
 
     useEffect(() => {
-        const setWeather = (city, country) => {
+        const setWeather = (city, country, countryCode) => {
             const appid = "1677b08b2351666a9a6ce22ff3de4553";
-            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city} &appid=${appid}`;
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city},${countryCode}, &appid=${appid}`;
             axios
             .get(url)
             .then(response => {
                 const { data } = response
                 const temperature = data.main.temp
-                const state = "sunny"
+                const state = data.weather[0].main.toLowerCase()
                 const propName = `${city}-${country}`
-                const propValue= {temperature, state}
-                setallWeather({...allWeather,[propName]: propValue })
+                const propValue= {temperature, state} 
+
+
+                setallWeather(allWeather => (
+                {...allWeather,[propName]: propValue }
+        
+                ))
 
             })
         }
-        cities.array.forEach(({ city, country }) => {
-            setWeather(city, country)
+        cities.forEach(({ city, country, countryCode }) => {
+            setWeather(city, country, countryCode)
         });
     }, [cities])
 
@@ -76,6 +82,7 @@ CityList.propTypes = {
     cities: PropTypes.arrayOf(PropTypes.shape({
         city: PropTypes.string.isRequired,
         country: PropTypes.string.isRequired,
+        countryCode: PropTypes.string.isRequired,
     })).isRequired,
     onClickCity: PropTypes.func.isRequired,
 }
