@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 import convertUnits from 'convert-units'
+import Alert from '@material-ui/lab/Alert'
 import { Grid, List, ListItem} from '@material-ui/core'
 import CityInfo from './../CityInfo/CityInfo'
 import Weather from '../Weather/Weather'
@@ -39,6 +40,7 @@ const renderCityAndCountry = eventOnClickCity => (cityAndCountry, weather) =>{
 
 const CityList = ({cities, onClickCity}) => {
     const [allWeather, setallWeather] = useState({})
+    const [error, setError] = useState(null)
 
     useEffect(() => {
         const setWeather = (city, country, countryCode) => {
@@ -66,6 +68,7 @@ const CityList = ({cities, onClickCity}) => {
                     const { data, status} = error.response;
                     console.log("data", data);
                     console.log("status", status);
+                    setError("")
                 } else if (error.request){
                     console.log("Server in-accesible o no tengo internet");
                 }else  {
@@ -81,12 +84,18 @@ const CityList = ({cities, onClickCity}) => {
     //const weather = { temperature: 10, state: "sunny" }
 
     return (
-        <List>
+        <div>
             {
-                cities.map(cityAndCountry => renderCityAndCountry(onClickCity)(cityAndCountry, 
-                    allWeather[`${cityAndCountry.city}-${cityAndCountry.country}`]))
+                error && <Alert severity="error">{error}</Alert>
             }
-        </List>
+            <List>
+                {
+                    cities.map(cityAndCountry => renderCityAndCountry(onClickCity)(cityAndCountry, 
+                        allWeather[`${cityAndCountry.city}-${cityAndCountry.country}`]))
+                }
+            </List>  
+        </div>
+
     )
 }
 
