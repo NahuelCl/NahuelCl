@@ -43,50 +43,45 @@ const CityList = ({cities, onClickCity}) => {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        const setWeather = (city, country, countryCode) => {
+        const setWeather = async (city, country, countryCode) => {
             const appid = "1677b08b2351666a9a6ce22ff3de4553";
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city},${countryCode}, &appid=${appid}`;
-            axios
-            .get(url)
-            .then(response => {
-                const { data } = response
-                const temperature =Number(convertUnits(data.main.temp).from("K").to("C").toFixed(0)) 
-                const state = data.weather[0].main.toLowerCase()
-                const propName = `${city}-${country}`
-                const propValue= {temperature, state} 
+            
+
+            try{
+                const response = await axios.get(url)
+            const { data } = response
+            const temperature =Number(convertUnits(data.main.temp).from("K").to("C").toFixed(0)) 
+            const state = data.weather[0].main.toLowerCase()
+            const propName = `${city}-${country}`
+            const propValue= {temperature, state} 
 
 
-                setallWeather(allWeather => (
-                {...allWeather,[propName]: propValue }
-        
-                ))
+            setallWeather(allWeather => ({...allWeather,[propName]: propValue }))
+            }
 
-            })
-            .catch( error => {
-                //Errore que nos responde el server
-                if (error.response) {
-                    const { data, status} = error.response;
-                    console.log("data", data);
-                    console.log("status", status);
-                    setError("")
+            catch (error){
+                 //Errore que nos responde el server
+                 if (error.response) {
+                    setError("Ha ocurrido un error con el servidor de clima")
                 } else if (error.request){
-                    console.log("Server in-accesible o no tengo internet");
+                    setError("Verifique la conexion a internet");
                 }else  {
-                    console.log("Server in-accesible o no tengo internet");
+                    setError("Error al cargar los datos");
                 }
-            } )
+            }
+
         }
         cities.forEach(({ city, country, countryCode }) => {
             setWeather(city, country, countryCode)
         });
     }, [cities])
 
-    //const weather = { temperature: 10, state: "sunny" }
 
     return (
         <div>
             {
-                error && <Alert severity="error">{error}</Alert>
+                error && <Alert onClose={() => setError(null)} severity="error">{error}</Alert>
             }
             <List>
                 {
