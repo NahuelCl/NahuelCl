@@ -1,5 +1,7 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import axios from 'axios'
 import {Grid} from '@material-ui/core'
+import { useParams } from 'react-router-dom'
 import AppFrame from '../components/AppFrame/AppFrame'
 import CityInfo from '../components/CityInfo/CityInfo'
 import Weather from '../components/Weather/Weather'
@@ -40,7 +42,7 @@ const dataExample = [
     }
 ]
 
-const forecastItemList = [
+const forecastItemListExample = [
     { hour: 18, state:"clear", temperature:24, weekDay:"Jueves" },
     { hour: 7, state:"clouds", temperature:22, weekDay:"Viernes"},
     { hour: 5, state:"rain", temperature:5, weekDay:"Miercoles" },
@@ -48,15 +50,46 @@ const forecastItemList = [
 ]
 
 
-const CityPage = props => {
-    const city = "Buenos Aires"
+const CityPage = () => {
+
+    const [data, setdata] = useState(null)
+
+    const [forecastItemList, setforecastItemList] = useState(null)
+
+    const {city, countryCode} = useParams()
+
+
+    useEffect( () => {
+
+       const getForecast =async () =>{
+           const appid= "7f3839b077ab9ee136b012dfe5029127"
+            const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city},${countryCode}&appid=${appid}`
+        
+            try{
+                const {data} = await axios.get(url)
+
+                console.log(data)
+
+                setdata(dataExample)
+                setforecastItemList(forecastItemListExample)
+            } catch (error){
+                console.log(error)
+            } 
+       }
+
+       getForecast()
+       
+    }, [city, countryCode])
+    
+
+  
     const country = "Argentina"
     const state ="clouds"
     const temperature = 20
     const humidity = 80
     const wind = 50
-    const data = dataExample
-    const forecasteItemList = forecastItemList
+//    const data = dataExample
+//    const forecasteItemList = forecastItemList
 
     return (   
         <AppFrame>
@@ -76,10 +109,14 @@ const CityPage = props => {
                     <WeatherDetails humidity={humidity} wind={wind}/>
                 </Grid>
                 <Grid item>
-                    <ForecastChart data={data}/>
+                {
+                    data && <ForecastChart data={data} />
+                }   
                 </Grid>
                 <Grid item>
-                    <Forecast forecastItemList={forecasteItemList}/>
+                    {
+                        forecastItemList && <Forecast forecastItemList={forecastItemList}/>
+                    }
                 </Grid>
             </Grid>
         </AppFrame> 
