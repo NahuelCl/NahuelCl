@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import {Grid} from '@material-ui/core'
+import 'moment/locale/es'
 import { useParams } from 'react-router-dom'
 import AppFrame from '../components/AppFrame/AppFrame'
 import CityInfo from '../components/CityInfo/CityInfo'
@@ -8,6 +9,7 @@ import Weather from '../components/Weather/Weather'
 import WeatherDetails from '../components/WeatherDetails'
 import Forecast from '../components/Forecast'
 import ForecastChart from '../components/ForecastChart'
+import moment from 'moment'
 
 const dataExample = [
     {
@@ -70,7 +72,20 @@ const CityPage = () => {
 
                 console.log(data)
 
-                setdata(dataExample)
+                const daysAhead = [0, 1, 2, 3, 4]
+                const days= daysAhead.map(d => moment().add(d,'d'))
+                const dataAux = days.map(d => {
+                    /*"dayHour": "Vie 12",
+                      "min": 18,
+                      "max": 28,*/
+                    return ({
+                        dayHour: d.format('ddd'),
+                        min: 18,
+                        max: 28
+                    })
+                })
+                
+                setdata(dataAux)
                 setforecastItemList(forecastItemListExample)
             } catch (error){
                 console.log(error)
