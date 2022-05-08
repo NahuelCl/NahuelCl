@@ -6,10 +6,20 @@ export default{
     component: ErrorBoundary
 }
 
+const ComponentWithoutError = () => <h1>Sin Error</h1>
+
+const prop = undefined
+
+const ComponentWithError = () => <h1>{prop.hola}</h1>
+
 export const ErrorBoundaryWithError = ()  => (
-        <ErrorBoundary  />
+        <ErrorBoundary>
+            <ComponentWithError/>
+         </ErrorBoundary> 
     )
 
 export const ErrorBoundaryWithoutError = ()  => (
-        <ErrorBoundary  />
-    )    
+    <ErrorBoundary>
+        <ComponentWithoutError/>
+    </ErrorBoundary> 
+)    

@@ -10,12 +10,17 @@ class ErrorBoundary extends React.Component {
         }
 
     }
-    
+
+    static getDerivedStateFromError(error){
+        return {hasError: true}
+    }
+
     render() {
         return (
             this.state.hasError ? 
-            <h1>Hubo un error</h1> :
-            this.props.children
+            (<h1>Hubo un error</h1>)
+            :
+            (this.props.children)
         )   
     }
 }
