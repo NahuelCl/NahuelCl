@@ -82,8 +82,10 @@ const CityPage = () => {
                         const dayofYear = moment.unix(item.dt).dayOfYear()
                         return dayofYear === day.dayOfYear()
                     })
+
                     console.log("day.dayOfYear()",day.dayOfYear())
                     console.log("tempObjArray",tempObjArray)
+                    
                     return ({
                         dayHour: day.format('ddd'),
                         min: 18,
