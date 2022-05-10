@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
+import convertUnits from 'convert-units/lib'
 import {Grid} from '@material-ui/core'
 import 'moment/locale/es'
 import { useParams } from 'react-router-dom'
@@ -71,6 +72,7 @@ const CityPage = () => {
                 const {data} = await axios.get(url)
 
                 console.log(data)
+                const toCelsius = (temp) => Number(convertUnits(temp).from('K').to('C').toFixed(0))
 
                 const daysAhead = [0, 1, 2, 3, 4]
                 const days= daysAhead.map(d => moment().add(d,'d'))
@@ -85,15 +87,31 @@ const CityPage = () => {
 
                     console.log("day.dayOfYear()",day.dayOfYear())
                     console.log("tempObjArray",tempObjArray)
+
+                    const temps = tempObjArray.map(item => item.main.temp)
                     
+      
+
                     return ({
                         dayHour: day.format('ddd'),
-                        min: 18,
-                        max: 28
+                        min: toCelsius(Math.min(...temps)),
+                        max: toCelsius(Math.max(...temps))
                     })
                 })
                 
                 setdata(dataAux)
+
+                const interval = [4, 8, 12, 16, 20, 24]
+                const forecasteItemListAux = data.list
+                .filter((item,index)=> interval.includes(index))
+                .map(item => {
+                    return ({
+                        hour: moment.unix(item.dt).hour(),
+                        weekDay: moment.unix(item.dt).format('dddd'),
+                        state: item.weather[0].main.toLowerCase(),
+                        temperature: toCelsius(item.main.temp)
+                    })
+                })
                 setforecastItemList(forecastItemListExample)
             } catch (error){
                 console.log(error)
